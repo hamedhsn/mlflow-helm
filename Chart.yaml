@@ -1,0 +1,11 @@
+apiVersion: v2
+description: mlflow Helm Chart
+name: mlflow
+version: 0.1.0
+appVersion: "1.27.0"
+type: application
+dependencies:
+  - name: postgresql
+    version: 8.6.4
+    repository: https://charts.helm.sh/stable
+    condition: postgresql.enabled
