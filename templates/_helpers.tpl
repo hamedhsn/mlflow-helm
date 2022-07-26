@@ -66,6 +66,14 @@ Create the name of the service account to use
 #EXAMPLE USAGE: {{ include "mlflow.env" (dict "Release" .Release "Values" .Values "CONNECTION_CHECK_MAX_COUNT" "0") }}
 #*/}}
 {{- define "mlflow.env" }}
+- name: DATABASE_NAME
+  value: {{ .Values.server.db.name | quote }}
+- name: DATABASE_URL
+  value: {{ .Values.server.db.url | quote }}
+- name: DATABASE_PORT
+  value: {{ .Values.server.db.port | quote }}
+- name: ARTIFACT_STORE
+  value: {{ .Values.server.artifact.name | quote }}
 {{- /* set DATABASE_USER */ -}}
 {{- if .Values.postgresql.enabled }}
 - name: DATABASE_USER
