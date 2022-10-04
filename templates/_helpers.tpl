@@ -67,7 +67,7 @@ Create the name of the service account to use
 #*/}}
 {{- define "mlflow.env" }}
 - name: DATABASE_NAME
-  value: {{ .Values.server.db.name | quote }}
+  value: {{ .Values.postgresql.postgresqlDatabase | quote }}
 - name: DATABASE_URL
   value: {{ .Values.server.db.url | quote }}
 - name: DATABASE_PORT

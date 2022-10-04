@@ -19,7 +19,7 @@ server:
     url: mlflow-postgresql
     port: 5432
   artifact:
-    name: bis-nonprod-ds
+    name: s3://bis-nonprod-ds/mlflow
   serviceAccount:
     # Specifies whether a service account should be created
     create: true
@@ -97,7 +97,6 @@ postgresql:
   ## - set to `false` if using `externalDatabase.*`
   ##
   enabled: true
-
   ## the postgres database to use
   ##
   postgresqlDatabase: mlflow

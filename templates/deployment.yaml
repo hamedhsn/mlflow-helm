@@ -31,6 +31,11 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.server.securityContext | nindent 12 }}
+          command:
+          - "bash"
+          - "-c"
+          args:
+          - "mlflow server --default-artifact-root ${ARTIFACT_STORE} --backend-store-uri postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_URL}:${DATABASE_PORT}/${DATABASE_NAME} --host 0.0.0.0"
           image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.server.image.pullPolicy }}
           resources:
