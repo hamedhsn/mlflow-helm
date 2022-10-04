@@ -17,7 +17,7 @@ ENV DATABASE_PASSWORD=mlflow
 ENV DATABASE_NAME=mlflow-tracking-server-db
 ENV DATABASE_URL=mlflow-postgresql
 ENV DATABASE_PORT=5432
-ENV ARTIFACT_STORE=bis-nonprod-ds
+ENV ARTIFACT_STORE=s3://bis-nonprod-ds/mlflow
 
 ENTRYPOINT mlflow server \
         --default-artifact-root $ARTIFACT_STORE \
