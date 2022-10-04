@@ -7,10 +7,10 @@ server:
   nameOverride: "tracking-server"
   fullnameOverride: ""
   image:
-    repository: nginx
+    repository: 551295956433.dkr.ecr.us-west-2.amazonaws.com/ds/platform
     pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: mlflow
 
     imagePullSecrets: []
 
