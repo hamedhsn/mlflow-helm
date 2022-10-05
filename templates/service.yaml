@@ -2,14 +2,30 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "mlflow-helm.fullname" . }}
+  {{- if .Values.server.service.annotations }}
+    annotations:
+    {{- toYaml .Values.server.service.annotations | nindent 4 }}
+  {{- end }}
   labels:
     {{- include "mlflow-helm.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.server.service.type }}
-  ports:
-    - port: {{ .Values.server.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
   selector:
     {{- include "mlflow-helm.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: web
+      protocol: TCP
+      port: {{ .Values.server.service.externalPort | default 5000 }}
+      {{- if and (eq .Values.server.service.type "NodePort") (.Values.server.service.nodePort.http) }}
+      nodePort: {{ .Values.server.service.nodePort.http }}
+      {{- end }}
+      targetPort: 5000
+  {{- if eq .Values.server.service.type "LoadBalancer" }}
+  {{- if .Values.server.service.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.server.service.loadBalancerIP | quote }}
+  {{- end }}
+  {{- if .Values.server.service.loadBalancerSourceRanges }}
+  loadBalancerSourceRanges:
+    {{- toYaml .Values.server.service.loadBalancerSourceRanges | nindent 4 }}
+  {{- end }}
+{{- end }}
