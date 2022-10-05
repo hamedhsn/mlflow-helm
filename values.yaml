@@ -20,6 +20,13 @@ server:
     port: 5432
   artifact:
     name: s3://bis-nonprod-ds/mlflow
+
+  extraEnv: 
+  - name: MLFLOW_S3_UPLOAD_EXTRA_ARGS
+    value: '{"ServerSideEncryption": "AES256"}'
+  - name: AWS_DEFAULT_REGION
+    value: us-west-2
+
   serviceAccount:
     # Specifies whether a service account should be created
     create: true

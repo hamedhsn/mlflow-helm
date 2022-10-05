@@ -114,4 +114,9 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
+{{- /* user-defined environment variables */ -}}
+{{- if .Values.server.extraEnv }}
+{{ toYaml .Values.server.extraEnv }}
 {{- end }}
+{{- end }}
+
