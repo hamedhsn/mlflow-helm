@@ -134,6 +134,9 @@ Create the name of the service account to use
 {{- if .Values.server.args.artifacts_destination }}
 {{- $cmd = printf "%s %s %s" $cmd "--artifacts-destination" .Values.server.args.artifacts_destination -}}
 {{- end }}
+{{- if .Values.server.args.static_prefix }}
+{{- $cmd = printf "%s %s %s" $cmd "--static-prefix" .Values.server.args.static_prefix -}}
+{{- end }}
 {{- $cmd = printf "%s %s" $cmd "--host 0.0.0.0" -}}
 {{- if .Values.server.args.gunicorn_opts }}
 {{- $cmd = printf "%s %s %s" $cmd "--gunicorn-opts"  (.Values.server.args.gunicorn_opts| squote)  -}}
