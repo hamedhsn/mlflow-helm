@@ -35,7 +35,12 @@ spec:
           - "bash"
           - "-c"
           args:
-          - "mlflow server --default-artifact-root ${ARTIFACT_STORE} --backend-store-uri postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_URL}:${DATABASE_PORT}/${DATABASE_NAME} --host 0.0.0.0"
+          {{- include "mlflow.server.cmd" . | indent 12 }}
+          # - "mlflow server --default-artifact-root ${ARTIFACT_STORE} --backend-store-uri postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_URL}:${DATABASE_PORT}/${DATABASE_NAME} --host 0.0.0.0"
+          # mlflow server --default-artifact-root https://ds-k8s-d2.nonprod.bis.sie.sony.com/mlflow/api/2.0/mlflow-artifacts/artifacts/experiments
+          # --backend-store-uri postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_URL}:${DATABASE_PORT}/${DATABASE_NAME}
+          # --host 0.0.0.0 --serve-artifacts --artifacts-destination ${ARTIFACT_STORE}
+          # --gunicorn-opts "--log-level debug"
           image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.server.image.pullPolicy }}
           resources:
