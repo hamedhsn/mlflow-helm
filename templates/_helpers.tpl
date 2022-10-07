@@ -121,22 +121,23 @@ Create the name of the service account to use
 {{- end }}
 
 {{- define "mlflow.server.cmd" }}
-- "mlflow server"
+{{- $cmd := "mlflow server" }}
 {{- if .Values.server.args.default_artifact_root }}
-- "--default-artifact-root {{ .Values.server.args.default_artifact_root }}"
+{{- $cmd = printf "%s %s %s" $cmd "--default-artifact-root" .Values.server.args.default_artifact_root -}}
 {{- end }}
 {{- if .Values.server.args.backend_store_uri }}
-- "--backend-store-uri {{ .Values.server.args.backend_store_uri }}"
+{{- $cmd = printf "%s %s %s" $cmd "--backend-store-uri" .Values.server.args.backend_store_uri -}}
 {{- end }}
 {{- if .Values.server.args.serve_artifacts }}
-- "--serve-artifacts"
+{{- $cmd = printf "%s %s" $cmd "--serve-artifacts" -}}
 {{- end }}
 {{- if .Values.server.args.artifacts_destination }}
-- "--artifacts-destination {{ .Values.server.args.artifacts_destination }}"
+{{- $cmd = printf "%s %s %s" $cmd "--artifacts-destination" .Values.server.args.artifacts_destination -}}
 {{- end }}
-- "--host 0.0.0.0"
+{{- $cmd = printf "%s %s" $cmd "--host 0.0.0.0" -}}
 {{- if .Values.server.args.gunicorn_opts }}
-- "--gunicorn-opts '{{ .Values.server.args.gunicorn_opts }}'"
+{{- $cmd = printf "%s %s %s" $cmd "--gunicorn-opts"  (.Values.server.args.gunicorn_opts| squote)  -}}
 {{- end }}
+- {{ $cmd }}
 {{- end }}
 
