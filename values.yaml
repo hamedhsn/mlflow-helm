@@ -78,7 +78,6 @@ server:
         match: PathPrefix(`/mlflow`)
         services:
         - kind: Service
-          namespace: ds
           port: 5000
       tls: []
         #  - secretName: chart-example-tls

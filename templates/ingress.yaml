@@ -1,5 +1,22 @@
 {{- $fullName := include "mlflow-helm.fullname" . -}}
+{{- $nameSpace := .Values.server.ingress.traefik.namespace -}}
 {{- if .Values.server.ingress.traefik.enabled -}}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ $fullName }}
+  namespace: {{ $nameSpace }}
+  labels:
+    {{- include "mlflow-helm.labels" . | nindent 4 }}
+  {{- with .Values.server.ingress.traefik.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replacePathRegex:
+    regex: ^/mlflow/api/(.*)
+    replacement: /mlflow/ajax-api/$1
+---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
@@ -10,17 +27,20 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   name: {{ $fullName }}
-  namespace: {{ .Values.server.ingress.traefik.namespace }}
+  namespace: {{ $nameSpace }}
 spec:
   entryPoints: {{ .Values.server.ingress.traefik.entryPoints }}
   routes:
     {{- range .Values.server.ingress.traefik.routes }}
     - kind: {{ .kind }}
       match: {{ .match | quote }}
+      middlewares:
+      - name: {{ $fullName }}
+        namespace: {{ $nameSpace }}
       services:
       {{- range .services }}
       - kind: {{ .kind }}
-        namespace: {{ .namespace }}
+        namespace: {{ $nameSpace }}
         name: {{ $fullName }}
         port: {{ .port }}
       {{- end }}
